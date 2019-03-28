@@ -9,7 +9,7 @@ import org.springframework.util.DigestUtils;
 import yoha.seckill.dao.SeckillDao;
 import yoha.seckill.dao.SuccessKilledDao;
 import yoha.seckill.dto.Exposer;
-import yoha.seckill.dto.SeckillResult;
+import yoha.seckill.dto.SeckillExecution;
 import yoha.seckill.entity.Seckill;
 import yoha.seckill.entity.SuccessKilled;
 import yoha.seckill.enums.SeckillStateEnum;
@@ -67,7 +67,7 @@ public class SeckillServiceImpl implements SeckillService {
     }
 
     @Transactional
-    public SeckillResult executeSeckill(long seckillId, long userPhone, String md5)
+    public SeckillExecution executeSeckill(long seckillId, long userPhone, String md5)
             throws SeckillException, RepeatKillException, SeckillCloseException {
         if (md5 == null || !md5.equals(getMD5(seckillId))) {
             throw new SeckillException("seckill url rewrite");
@@ -87,7 +87,7 @@ public class SeckillServiceImpl implements SeckillService {
                 } else {
                     //秒杀成功
                     SuccessKilled successKilled = successKilledDao.queryByIdWithSeckill(seckillId, userPhone);
-                    return new SeckillResult(seckillId, SeckillStateEnum.SUCCESS, successKilled);
+                    return new SeckillExecution(seckillId, SeckillStateEnum.SUCCESS, successKilled);
                 }
             }
         } catch (SeckillCloseException e1) {

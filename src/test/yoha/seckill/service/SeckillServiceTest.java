@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import yoha.seckill.dto.Exposer;
-import yoha.seckill.dto.SeckillResult;
+import yoha.seckill.dto.SeckillExecution;
 import yoha.seckill.entity.Seckill;
 import yoha.seckill.exception.RepeatKillException;
 import yoha.seckill.exception.SeckillCloseException;
@@ -52,7 +52,7 @@ public class SeckillServiceTest {
         long id = 1000;
         long userPhone = 12211223323L;
         String md5 = "927dd46ff9b658752420d8f569bc4840";
-        SeckillResult result = seckillService.executeSeckill(id, userPhone, md5);
+        SeckillExecution result = seckillService.executeSeckill(id, userPhone, md5);
         logger.info("result={}",result);
     }
 
@@ -64,7 +64,7 @@ public class SeckillServiceTest {
             long userPhone = 13321214433L;
             String md5 = exposer.getMd5();
             try {
-                SeckillResult result = seckillService.executeSeckill(id, userPhone, md5);
+                SeckillExecution result = seckillService.executeSeckill(id, userPhone, md5);
                 logger.info("result={}",result);
             }catch (SeckillCloseException e){
                 logger.error(e.getMessage());
@@ -75,7 +75,7 @@ public class SeckillServiceTest {
             logger.warn("exposer={}",exposer);
         }
         // 第一次成功秒杀的结果
-        //result=SeckillResult{seckillId=1000, state=1, stateInfo='秒杀成功',
+        //result=SeckillExecution{seckillId=1000, state=1, stateInfo='秒杀成功',
         //      successKilled=SuccessKilled{userPhone=13321214433, state=0, createTime=Thu Mar 28 11:47:31 CST 2019, seckill=1000元秒杀iphone6}}
 
         // 第二次重复秒杀抛出异常

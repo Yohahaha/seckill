@@ -1,7 +1,7 @@
 package yoha.seckill.service;
 
 import yoha.seckill.dto.Exposer;
-import yoha.seckill.dto.SeckillResult;
+import yoha.seckill.dto.SeckillExecution;
 import yoha.seckill.entity.Seckill;
 import yoha.seckill.exception.RepeatKillException;
 import yoha.seckill.exception.SeckillCloseException;
@@ -35,6 +35,6 @@ public interface SeckillService {
      * @param userPhone 用户信息
      * @param md5 秒杀接口验证
      */
-    SeckillResult executeSeckill(long seckillId, long userPhone, String md5)
+    SeckillExecution executeSeckill(long seckillId, long userPhone, String md5)
         throws SeckillException, RepeatKillException, SeckillCloseException;
 }

@@ -1,78 +1,47 @@
 package yoha.seckill.dto;
 
-import yoha.seckill.entity.SuccessKilled;
-import yoha.seckill.enums.SeckillStateEnum;
-
 /**
- * 封装秒杀结果
+ * web层返回结果类
  */
-public class SeckillResult {
+public class SeckillResult<T> {
 
-    private long seckillId;
+    private boolean success;
 
-    //秒杀状态
-    private int state;
+    private String error;
 
-    //秒杀状态说明
-    private String stateInfo;
+    private T data;
 
-    //秒杀成功对象
-    private SuccessKilled successKilled;
-
-    //秒杀成功
-    public SeckillResult(long seckillId, SeckillStateEnum stateEnum, SuccessKilled successKilled) {
-        this.seckillId = seckillId;
-        this.state = stateEnum.getState();
-        this.stateInfo = stateEnum.getStateInfo();
-        this.successKilled = successKilled;
+    public SeckillResult(boolean success, String error) {
+        this.success = success;
+        this.error = error;
     }
 
-    //秒杀失败
-    public SeckillResult(long seckillId, SeckillStateEnum stateEnum) {
-        this.seckillId = seckillId;
-        this.state = stateEnum.getState();
-        this.stateInfo = stateEnum.getStateInfo();
+    public SeckillResult(boolean success, T data) {
+        this.success = success;
+        this.data = data;
     }
 
-    @Override
-    public String toString() {
-        return "SeckillResult{" +
-                "seckillId=" + seckillId +
-                ", state=" + state +
-                ", stateInfo='" + stateInfo + '\'' +
-                ", successKilled=" + successKilled +
-                '}';
+    public boolean isSuccess() {
+        return success;
     }
 
-    public long getSeckillId() {
-        return seckillId;
+    public void setSuccess(boolean success) {
+        this.success = success;
     }
 
-    public void setSeckillId(long seckillId) {
-        this.seckillId = seckillId;
+    public String getError() {
+        return error;
     }
 
-    public int getState() {
-        return state;
+    public void setError(String error) {
+        this.error = error;
     }
 
-    public void setState(int state) {
-        this.state = state;
+    public T getData() {
+        return data;
     }
 
-    public String getStateInfo() {
-        return stateInfo;
-    }
-
-    public void setStateInfo(String stateInfo) {
-        this.stateInfo = stateInfo;
-    }
-
-    public SuccessKilled getSuccessKilled() {
-        return successKilled;
-    }
-
-    public void setSuccessKilled(SuccessKilled successKilled) {
-        this.successKilled = successKilled;
+    public void setData(T data) {
+        this.data = data;
     }
 }
