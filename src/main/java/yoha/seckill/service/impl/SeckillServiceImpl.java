@@ -2,6 +2,9 @@ package yoha.seckill.service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 import yoha.seckill.dao.SeckillDao;
 import yoha.seckill.dao.SuccessKilledDao;
@@ -17,13 +20,15 @@ import yoha.seckill.service.SeckillService;
 
 import java.util.Date;
 import java.util.List;
-
+@Service
 public class SeckillServiceImpl implements SeckillService {
 
     private Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
+    @Autowired
     private SeckillDao seckillDao;
 
+    @Autowired
     private SuccessKilledDao successKilledDao;
 
     //MD5盐值字符串
@@ -61,6 +66,7 @@ public class SeckillServiceImpl implements SeckillService {
         return md5;
     }
 
+    @Transactional
     public SeckillResult executeSeckill(long seckillId, long userPhone, String md5)
             throws SeckillException, RepeatKillException, SeckillCloseException {
         if (md5 == null || !md5.equals(getMD5(seckillId))) {
