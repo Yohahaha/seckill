@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 import yoha.seckill.dao.SeckillDao;
 import yoha.seckill.dao.SuccessKilledDao;
+import yoha.seckill.dao.cache.RedisDao;
 import yoha.seckill.dto.Exposer;
 import yoha.seckill.dto.SeckillExecution;
 import yoha.seckill.entity.Seckill;
@@ -31,6 +32,9 @@ public class SeckillServiceImpl implements SeckillService {
     @Autowired
     private SuccessKilledDao successKilledDao;
 
+    @Autowired
+    private RedisDao redisDao;
+
     //MD5盐值字符串
     private String salt = "SJDOIWdwalk3#@E890D*)(";
 
@@ -43,10 +47,23 @@ public class SeckillServiceImpl implements SeckillService {
     }
 
     public Exposer exportSeckillUrl(long seckillId) {
-        Seckill seckill = seckillDao.queryById(seckillId);
-        //查询失败
+        // 使用redis优化
+        /*
+            if redis.get=null
+              get from db
+              if db.get != null
+                redis.put
+            else go on
+         */
+        Seckill seckill = redisDao.getSeckill(seckillId);
         if (seckill == null) {
-            return new Exposer(false, seckillId);
+            seckill = seckillDao.queryById(seckillId);
+            //查询失败
+            if (seckill == null) {
+                return new Exposer(false, seckillId);
+            } else {
+                redisDao.putSeckill(seckill);
+            }
         }
         Date startTime = seckill.getStartTime();
         Date endTime = seckill.getEndTime();
@@ -85,7 +102,7 @@ public class SeckillServiceImpl implements SeckillService {
                     //重复秒杀
                     throw new RepeatKillException("seckill repeat");
                 } else {
-                    //秒杀成功
+                    //秒杀成功，获取秒杀成功记录
                     SuccessKilled successKilled = successKilledDao.queryByIdWithSeckill(seckillId, userPhone);
                     return new SeckillExecution(seckillId, SeckillStateEnum.SUCCESS, successKilled);
                 }

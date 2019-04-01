@@ -44,4 +44,10 @@
         <!-- Dao接口包扫描 -->
         <property name="basePackage" value="yoha.seckill.dao"/>
     </bean>
+
+    <!-- 配置redisDao -->
+    <bean id="redisDao" class="yoha.seckill.dao.cache.RedisDao">
+        <constructor-arg index="0" value="localhost"/>
+        <constructor-arg index="1" value="6379"/>
+    </bean>
 </beans>

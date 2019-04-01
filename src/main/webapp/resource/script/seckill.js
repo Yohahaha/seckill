@@ -112,7 +112,7 @@ var seckill = {
                     var inputPhone = $('#killPhoneKey').val();
                     if (seckill.validatePhone(inputPhone)) {
                         //用户输入的电话号码有效，写入cookie并刷新页面
-                        $.cookie('killPhone', inputPhone, {expires: 7, path: '/seckill'})
+                        $.cookie('killPhone', inputPhone, {expires: 7, path: '/seckill'});
                         window.location.reload();
                     } else {
                         $('#killPhoneMessage').hide().html('<label class="label label-danger">手机号错误!</label>').show(300);
