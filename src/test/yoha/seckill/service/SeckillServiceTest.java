@@ -81,4 +81,16 @@ public class SeckillServiceTest {
         // 第二次重复秒杀抛出异常
         //ERROR y.seckill.service.SeckillServiceTest - seckill repeat
     }
+
+    @Test
+    public void TestProcedure(){
+        long id = 1000L;
+        long userPhone = 13344228822L;
+        Exposer exposer = seckillService.exportSeckillUrl(id);
+        if (exposer.isExposed()){
+            String md5 = exposer.getMd5();
+            SeckillExecution execution = seckillService.executeSeckillProcedure(id, userPhone, md5);
+            logger.info(execution.getStateInfo());
+        }
+    }
 }

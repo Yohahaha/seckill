@@ -85,6 +85,8 @@ public class SeckillController {
             return new SeckillResult(false, "用户未登录");
         }
         try {
+//            SeckillExecution execution = seckillService.executeSeckillProcedure(seckillId, phone, md5);
+//            这里也可以使用优化过的存储过程秒杀方法
             SeckillExecution execution = seckillService.executeSeckill(seckillId, phone, md5);
             return new SeckillResult<SeckillExecution>(true, execution);
         } catch (RepeatKillException e) {
